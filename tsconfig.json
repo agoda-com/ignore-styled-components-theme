@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "rootDir": "./src",
+    "declarationDir": "./dist",
+    "outDir": "./dist",
+    "skipLibCheck": true
+  }
+}
