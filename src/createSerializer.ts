@@ -26,7 +26,7 @@ function createPredicates({ defaultProps = true, aggressive = true, themes = [] 
 }
 
 export = function createSerializer(options: Options | 'nuclear' = {}): jest.SnapshotSerializerPlugin {
-    const predicates = options === 'nuclear' ? [] : createPredicates(options);
+    const predicates = options === 'nuclear' ? [() => true] : createPredicates(options);
 
     return {
         print(val, serialize) {
