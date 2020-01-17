@@ -2,6 +2,7 @@
 
 This snapshot serializer tries it's best to hide the theme property for styled components in snapshot tests.
 
+
 ## Usage
 
 In your jest config add this as a serailizer
@@ -16,9 +17,11 @@ module.exports = {
 }
 ```
 
+
 ## Complex Usage
 
-You can customize the behavior of this serializer by creating a javascript file that imports the `createSerializer`
+You can customize the behavior of this serializer by creating a javascript file that imports the `createSerializer`.
+This way you can still have snapshots when themes are actually being tested. 
 
 In project root
 `testSetup/ignore-styled-components-theme.js`
@@ -37,6 +40,17 @@ module.exports = {
     ]
 }
 ```
+
+## Nuclear
+
+If you do not want to show theme props in snapshots at all you can use the nuclear option.
+
+`testSetup/ignore-styled-components-theme.js`
+```javascript
+const createSerializer = require('ignore-styled-components-theme/createSerializer');
+module.exports = createSerializer('nuclear');
+```
+
 
 ## API
 
