@@ -2,22 +2,32 @@ import { isStyledComponent, ThemeConsumer, ThemeProvider } from 'styled-componen
 
 interface Options {
     defaultProps?: boolean;
-    aggressive?: boolean,
-    themes?: object[],
+    aggressive?: boolean;
+    themes?: object[];
 }
 
 function defaultPropsTest(val: any) {
-    return val.node.type?.defaultProps?.theme === val.props?.theme;
+    return val.node?.type?.defaultProps?.theme === val.props?.theme;
 }
 
-function strictTest(val: any) {
+function aggressiveTest(val: any) {
     return val.type === 'StyledComponent' ||
         val.node.type.constructor === ThemeProvider.constructor ||
         val.node.type.constructor === ThemeConsumer.constructor ||
         isStyledComponent(val.node.type);
 }
 
-export = function createSerializer({ defaultProps = true, aggressive = false, themes = [] }: Options = {}): jest.SnapshotSerializerPlugin {
+function createPredicates({ defaultProps = true, aggressive = true, themes = [] }: Options = {}) {
+    const predicates: Array<(val: any) => boolean> = [];
+    defaultProps && predicates.push(defaultPropsTest);
+    aggressive && predicates.push(aggressiveTest);
+    themes.length && predicates.push(val => themes.some(t => val?.props?.theme === t));
+    return predicates;
+}
+
+export = function createSerializer(options: Options | 'nuclear' = {}): jest.SnapshotSerializerPlugin {
+    const predicates = options === 'nuclear' ? [] : createPredicates(options);
+
     return {
         print(val, serialize) {
             return serialize({
@@ -31,11 +41,7 @@ export = function createSerializer({ defaultProps = true, aggressive = false, th
 
 
         test(val) {
-            return val?.node && (
-                (defaultProps && defaultPropsTest(val)) ||
-                (aggressive && strictTest(val)) ||
-                themes.some(t => val.props.theme === t)
-            ) && typeof val?.props?.theme === 'object';
+            return predicates.some(predicate => predicate(val)) && typeof val?.props?.theme === 'object';
         },
     };
 }
