@@ -1,6 +1,6 @@
 {
   "name": "ignore-styled-components-theme",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Ignore styled components theme prop for jest snapshots",
   "main": "index.js",
   "module": "index.js",
