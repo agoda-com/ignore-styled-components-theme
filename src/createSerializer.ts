@@ -34,7 +34,7 @@ export = function createSerializer(options: Options | 'nuclear' = {}): jest.Snap
                 ...val,
                 props: {
                     ...val.props,
-                    theme: 'Ignored styled-component theme',
+                    theme: 'Ignored styled-component theme in snapshots https://github.com/agoda-com/ignore-styled-components-theme',
                 },
             });
         },
